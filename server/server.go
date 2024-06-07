@@ -10,7 +10,12 @@ import (
 var board [3][3]string
 var currentPlayer = "X"
 
+// var players map[string]*net.Conn
+// var queue []string
+
 func main() {
+	// players = make(map[string]*net.Conn)
+	// queue = make([]string, 0)
 	listen, err := net.Listen("tcp", "localhost:8080")
 	if err != nil {
 		fmt.Println("Ошибка при запуске сервера:", err)
@@ -25,9 +30,11 @@ func main() {
 		fmt.Println("Ошибка при установлении соединения:", err)
 		return
 	}
+
 	defer conn.Close()
 
 	fmt.Println("Подключение установлено!")
+	conn.Write([]byte("Plaуer 1 connected\n"))
 
 	setupBoard()
 
@@ -70,7 +77,10 @@ func displayBoard() {
 }
 
 func doMove(move string) {
+	fmt.Println("move", move)
 	pos := strings.Split(move, ",")
+	fmt.Println(pos)
+
 	row := pos[0]
 	col := pos[1]
 	boardRow := int(row[0] - '0')
